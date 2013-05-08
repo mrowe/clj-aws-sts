@@ -2,9 +2,9 @@
 
 # clj-aws-sts
 
-A Clojure library for accessing Amazon Secure Token Service, based on
-the official AWS Java SDK and borrowing heavily from [clj-aws-ec2][]
-and James Reeves's [clj-aws-s3][] library.
+A Clojure library for accessing Amazon Security Token Service, based
+on the official AWS Java SDK and borrowing heavily from
+[clj-aws-ec2][] and James Reeves's [clj-aws-s3][] library.
 
 [clj-aws-ec2]: https://github.com/mrowe/clj-aws-ec2
 [clj-aws-s3]: https://github.com/weavejester/clj-aws-s3
@@ -22,6 +22,7 @@ Add the following dependency to your `project.clj` file:
 
 (def cred {:access-key "...", :secret-key "..."})
 
+(sts/get-session-token)
 ```
 
 ### Exception handling
@@ -30,7 +31,7 @@ You can catch exceptions and extract details of the error condition:
 
 ```clojure
 (try
-  (route53/do-something cred "a thing")
+  (sts/get-session-token cred)
   (catch Exception e (sts/decode-exception e)))
 ```
 
@@ -51,7 +52,7 @@ You can catch exceptions and extract details of the error condition:
 
 ### 0.1.1
 
- * Initial release.
+ * Initial release. Provides get-session-token with default params.
 
 
 ## License

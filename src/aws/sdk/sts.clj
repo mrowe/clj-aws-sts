@@ -8,6 +8,7 @@
   (:import com.amazonaws.AmazonServiceException
            com.amazonaws.auth.BasicAWSCredentials
            com.amazonaws.services.securitytoken.AWSSecurityTokenServiceClient
+           com.amazonaws.services.securitytoken.model.Credentials
            )
 
   (:require [clojure.string :as string]))
@@ -88,3 +89,29 @@
   [& exceptions]
   (map to-map exceptions))
 
+
+;;
+;; session tokens
+;;
+
+(extend-protocol Mappable
+  Credentials
+  (to-map [credentials]
+    {:access-key-id     (.getAccessKeyId credentials)
+     :secret-access-key (.getSecretAccessKey credentials)
+     :session-token     (.getSessionToken credentials)
+     :expiration        (.getExpiration credentials)}))
+
+(defn get-session-token
+  "Get a set of temporary credentials for an AWS account or IAM user.
+
+  Returns Credentials, a data structure which contains the following keys:
+    :access-key-id     - the AccessKeyId ID that identifies the temporary credentials
+    :secret-access-key - the Secret Access Key to sign requests
+    :session-token     - the security token that users must pass to the service API to use the temporary credentials
+    :expiration        - the date on which these credentials expire
+
+  E.g.:
+      (sts/get-session-token cred)"
+  [cred ]
+  (to-map (.getCredentials (.getSessionToken (sts-client cred)))))
