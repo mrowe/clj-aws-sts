@@ -106,20 +106,20 @@
   "Get a set of temporary credentials for an AWS account or IAM user.
    Optionally, pass a map of params including:
 
-      :duration-seconds - the duration, in seconds, that the credentials should remain valid
-      :serial-number    - the identification number of the MFA device for the user
-      :token-code       - the value provided by the MFA device
+     :duration-seconds - the duration, in seconds, that the credentials should remain valid
+     :serial-number    - the identification number of the MFA device for the user
+     :token-code       - the value provided by the MFA device
 
-  Returns Credentials, a data structure which contains the following keys:
+   Returns Credentials, a data structure which contains the following keys:
 
-    :access-key-id     - the AccessKeyId ID that identifies the temporary credentials
-    :secret-access-key - the Secret Access Key to sign requests
-    :session-token     - the security token that users must pass to the service API to use the temporary credentials
-    :expiration        - the date on which these credentials expire
+     :access-key-id     - the AccessKeyId ID that identifies the temporary credentials
+     :secret-access-key - the Secret Access Key to sign requests
+     :session-token     - the security token that users must pass to the service API to use the temporary credentials
+     :expiration        - the date on which these credentials expire
 
-  E.g.:
-      (sts/get-session-token cred)
-      (sts/get-session-token cred { :duration-seconds 3600 })"
+   E.g.:
+       (sts/get-session-token cred)
+       (sts/get-session-token cred { :duration-seconds 3600 })"
   ([cred]
      (to-map (.getCredentials (.getSessionToken (sts-client cred)))))
   ([cred params]
