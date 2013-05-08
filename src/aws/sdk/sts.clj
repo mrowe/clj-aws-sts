@@ -9,6 +9,7 @@
            com.amazonaws.auth.BasicAWSCredentials
            com.amazonaws.services.securitytoken.AWSSecurityTokenServiceClient
            com.amazonaws.services.securitytoken.model.Credentials
+           com.amazonaws.services.securitytoken.model.GetSessionTokenRequest
            )
 
   (:require [clojure.string :as string]))
@@ -58,13 +59,11 @@
       (clojure.lang.Reflector/invokeInstanceMember method-name obj arg)))
   obj)
 
-(declare mapper)
-
 (defn map->ObjectGraph
   "Transform the map of params to a graph of AWS SDK objects"
   [params]
   (let [keys (keys params)]
-    (zipmap keys (map #((mapper %) (params %)) keys))))
+    (zipmap keys (map #(params %) keys))))
 
 (defmacro mapper->
   "Creates a function that invokes set-fields on a new object of type
@@ -104,14 +103,23 @@
 
 (defn get-session-token
   "Get a set of temporary credentials for an AWS account or IAM user.
+   Optionally, pass a map of params including:
+
+      :duration-seconds - the duration, in seconds, that the credentials should remain valid
+      :serial-number    - the identification number of the MFA device for the user
+      :token-code       - the value provided by the MFA device
 
   Returns Credentials, a data structure which contains the following keys:
+
     :access-key-id     - the AccessKeyId ID that identifies the temporary credentials
     :secret-access-key - the Secret Access Key to sign requests
     :session-token     - the security token that users must pass to the service API to use the temporary credentials
     :expiration        - the date on which these credentials expire
 
   E.g.:
-      (sts/get-session-token cred)"
-  [cred ]
-  (to-map (.getCredentials (.getSessionToken (sts-client cred)))))
+      (sts/get-session-token cred)
+      (sts/get-session-token cred { :duration-seconds 3600 })"
+  ([cred]
+     (to-map (.getCredentials (.getSessionToken (sts-client cred)))))
+  ([cred params]
+     (to-map (.getCredentials (.getSessionToken (sts-client cred) ((mapper-> GetSessionTokenRequest) params))))))
