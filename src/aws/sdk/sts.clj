@@ -8,6 +8,8 @@
   (:import com.amazonaws.AmazonServiceException
            com.amazonaws.auth.BasicAWSCredentials
            com.amazonaws.services.securitytoken.AWSSecurityTokenServiceClient
+           com.amazonaws.services.securitytoken.model.AssumedRoleUser
+           com.amazonaws.services.securitytoken.model.AssumeRoleRequest
            com.amazonaws.services.securitytoken.model.Credentials
            com.amazonaws.services.securitytoken.model.GetSessionTokenRequest
            )
@@ -124,3 +126,45 @@
      (to-map (.getCredentials (.getSessionToken (sts-client cred)))))
   ([cred params]
      (to-map (.getCredentials (.getSessionToken (sts-client cred) ((mapper-> GetSessionTokenRequest) params))))))
+
+;;
+;; assume role
+;;
+
+(extend-protocol Mappable
+  AssumedRoleUser
+  (to-map [assumed-role-user]
+    {:arn             (.getArn assumed-role-user)
+     :assumed-role-id (.getAssumedRoleId assumed-role-user)}))
+
+(defn assume-role
+ "Returns a set of temporary security credentials that you can use to
+  access resources that are defined in the role's policy. It expects
+  the following parameters:
+
+    :role-arn          - the Amazon Resource Name (ARN) of the role that the caller is assuming
+    :role-session-name - an identifier for the assumed role session
+
+  See
+  http://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html
+  for descriptions of all available parameters.
+
+  Returns a data structure containing credentials and information
+  about the assumed user role:
+
+    {:credentials
+      {
+       :access-key-id     - the AccessKeyId ID that identifies the temporary credentials
+       :secret-access-key - the Secret Access Key to sign requests
+       :session-token     - the security token that users must pass to the service API to use the temporary credentials
+       :expiration        - the date on which these credentials expire
+      }
+     :assumed-role-user
+
+
+   E.g.:
+       (sts/assume-role cred {:role-arn \"\" :role-session-name \"\" :duration-seconds 1800 })"
+ [cred params]
+ (let [result (.assumeRole (sts-client cred) ((mapper-> AssumeRoleRequest) params))]
+   {:credentials (to-map (.getCredentials result))
+    :assumed-role-user (to-map (.getAssumedRoleUser result))}))
