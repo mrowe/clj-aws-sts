@@ -34,10 +34,10 @@ You can catch exceptions and extract details of the error condition:
 ```clojure
 (try
   (sts/get-session-token cred)
-  (catch Exception e (sts/decode-exception e)))
+  (catch Exception e (sts/decode-exceptions e)))
 ```
 
-`sts/decode-exception` provides a map with the following keys:
+`sts/decode-exceptions` provides a map with the following keys:
 
     :error-code
     :error-type
