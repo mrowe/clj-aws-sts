@@ -1,4 +1,4 @@
-(defproject clj-aws-sts "0.1.2"
+(defproject clj-aws-sts "0.1.3"
   :description "Clojure Amazon Security Token Service library."
   :url "https://github.com/mrowe/clj-aws-sts"
   :license {:name "Eclipse Public License"
