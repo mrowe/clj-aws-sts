@@ -163,7 +163,7 @@
 
 
    E.g.:
-       (sts/assume-role cred {:role-arn \"\" :role-session-name \"\" :duration-seconds 1800 })"
+       (sts/assume-role cred {:role-arn \"arn:aws:iam::123456789012:role/demo\" :role-session-name \"Demo\" :duration-seconds 1800 })"
  [cred params]
  (let [result (.assumeRole (sts-client cred) ((mapper-> AssumeRoleRequest) params))]
    {:credentials (to-map (.getCredentials result))
