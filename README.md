@@ -22,7 +22,7 @@ Add the following dependency to your `project.clj` file:
 
 (def cred {:access-key "...", :secret-key "..."})
 
-(sts/get-session-token)
+(sts/get-session-token cred)
 (sts/get-session-token cred {:duration-seconds 3600 })
 (sts/get-session-token cred {:serial-number "GAHT12345678" token-code "123456"})
 
