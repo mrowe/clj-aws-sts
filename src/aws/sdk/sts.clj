@@ -151,7 +151,7 @@
   and optionally:
 
     :duration-seconds - the duration, in seconds, that the credentials should remain valid
-    :policy - a policy specifying the permissions to associate with the credentials
+    :policy           - a policy specifying the permissions to associate with the credentials
 
  See
  http://docs.aws.amazon.com/STS/latest/UsingSTS/FederationPermissions.html
