@@ -20,7 +20,7 @@ Add the following dependency to your `project.clj` file:
 ```clojure
 (require '[aws.sdk.sts :as sts])
 
-(def cred {:access-key "...", :secret-key "..."})
+(def cred {:access-key "..." :secret-key "..."})
 
 (sts/get-session-token cred)
 (sts/get-session-token cred {:duration-seconds 3600 })
