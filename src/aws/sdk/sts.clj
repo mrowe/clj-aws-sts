@@ -114,7 +114,7 @@
      :serial-number    - the identification number of the MFA device for the user
      :token-code       - the value provided by the MFA device
 
-   Returns Credentials, a data structure which contains the following keys:
+   Returns a data structure which contains the following keys:
 
      :access-key-id     - the AccessKeyId ID that identifies the temporary credentials
      :secret-access-key - the Secret Access Key to sign requests
@@ -123,7 +123,7 @@
 
    E.g.:
        (sts/get-session-token cred)
-       (sts/get-session-token cred { :duration-seconds 3600 })"
+       (sts/get-session-token cred {:duration-seconds 3600})"
   ([cred]
      (to-map (.getCredentials (.getSessionToken (sts-client cred)))))
   ([cred params]
@@ -157,8 +157,8 @@
  http://docs.aws.amazon.com/STS/latest/UsingSTS/FederationPermissions.html
  for more details about specifying permissions in a policy.
 
- Returns a data structure containing credentials and information
- about the assumed user role:
+ Returns a data structure containing credentials and information about
+ the federated user:
 
    {:credentials
      {
