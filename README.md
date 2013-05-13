@@ -29,7 +29,7 @@ Add the following dependency to your `project.clj` file:
 (sts/get-federation-token cred {:name "auser"})
 (sts/get-federation-token cred {:name "auser" :duration-seconds 1800})
 
-(sts/assume-role cred {:role-arn \"arn:aws:iam::123456789012:role/demo\" :role-session-name \"Demo\" :duration-seconds 1800 })"
+(sts/assume-role cred {:role-arn "arn:aws:iam::123456789012:role/demo" :role-session-name "Demo" :duration-seconds 1800 })"
 ```
 
 ### Exception handling
