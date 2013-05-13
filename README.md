@@ -13,7 +13,7 @@ on the official AWS Java SDK and borrowing heavily from
 
 Add the following dependency to your `project.clj` file:
 
-    [clj-aws-sts "0.1.1"]
+    [clj-aws-sts "0.1.2"]
 
 ## Example
 
