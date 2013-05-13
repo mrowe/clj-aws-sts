@@ -11,6 +11,8 @@
            com.amazonaws.services.securitytoken.model.AssumedRoleUser
            com.amazonaws.services.securitytoken.model.AssumeRoleRequest
            com.amazonaws.services.securitytoken.model.Credentials
+           com.amazonaws.services.securitytoken.model.FederatedUser
+           com.amazonaws.services.securitytoken.model.GetFederationTokenRequest
            com.amazonaws.services.securitytoken.model.GetSessionTokenRequest
            )
 
@@ -126,6 +128,58 @@
      (to-map (.getCredentials (.getSessionToken (sts-client cred)))))
   ([cred params]
      (to-map (.getCredentials (.getSessionToken (sts-client cred) ((mapper-> GetSessionTokenRequest) params))))))
+
+
+;;
+;; federation tokens
+;;
+
+(extend-protocol Mappable
+  FederatedUser
+  (to-map [federated-user]
+    {:arn             (.getArn federated-user)
+     :federated-user-id (.getFederatedUserId federated-user)}))
+
+
+(defn get-federation-token
+  "Returns a set of temporary credentials for a federated user with
+   the user name and policy specified in the request. It expects the
+   following parameter:
+
+     :name - the name of the federated user associated with the credentials
+
+   and optionally:
+
+     :duration-seconds - the duration, in seconds, that the credentials should remain valid
+     :policy - a policy specifying the permissions to associate with the credentials
+
+  See
+  http://docs.aws.amazon.com/STS/latest/UsingSTS/FederationPermissions.html
+  for more details about specifying permissions in a policy.
+
+  Returns a data structure containing credentials and information
+  about the assumed user role:
+
+    {:credentials
+      {
+       :access-key-id     - the AccessKeyId ID that identifies the temporary credentials
+       :secret-access-key - the Secret Access Key to sign requests
+       :session-token     - the security token that users must pass to the service API to use the temporary credentials
+       :expiration        - the date on which these credentials expire
+      }
+     :federated-user
+      {
+       :arn               - the ARN specifying the federated user associated with the credentials
+       :federated-user-id - the string identifying the federated user associated with the credentials
+      }
+    }
+
+  E.g.:
+      (sts/get-federation-token cred {:name \"auser\"}"
+  [cred params]
+ (let [result (.getFederationToken (sts-client cred) ((mapper-> GetFederationTokenRequest) params))]
+   {:credentials (to-map (.getCredentials result))
+    :federated-user (to-map (.getFederatedUser result))}))
 
 ;;
 ;; assume role
