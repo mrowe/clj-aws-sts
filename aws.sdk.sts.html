@@ -42,14 +42,14 @@ about the assumed user role:
  and optionally:
 
    :duration-seconds - the duration, in seconds, that the credentials should remain valid
-   :policy - a policy specifying the permissions to associate with the credentials
+   :policy           - a policy specifying the permissions to associate with the credentials
 
 See
 http://docs.aws.amazon.com/STS/latest/UsingSTS/FederationPermissions.html
 for more details about specifying permissions in a policy.
 
-Returns a data structure containing credentials and information
-about the assumed user role:
+Returns a data structure containing credentials and information about
+the federated user:
 
   {:credentials
     {
@@ -73,7 +73,7 @@ Optionally, pass a map of params including:
   :serial-number    - the identification number of the MFA device for the user
   :token-code       - the value provided by the MFA device
 
-Returns Credentials, a data structure which contains the following keys:
+Returns a data structure which contains the following keys:
 
   :access-key-id     - the AccessKeyId ID that identifies the temporary credentials
   :secret-access-key - the Secret Access Key to sign requests
@@ -82,7 +82,7 @@ Returns Credentials, a data structure which contains the following keys:
 
 E.g.:
     (sts/get-session-token cred)
-    (sts/get-session-token cred { :duration-seconds 3600 })</pre></div><div class="public" id="var-map-%3EObjectGraph"><h3>map-&gt;ObjectGraph</h3><div class="usage"><code>(map-&gt;ObjectGraph params)</code></div><pre class="doc">Transform the map of params to a graph of AWS SDK objects
+    (sts/get-session-token cred {:duration-seconds 3600})</pre></div><div class="public" id="var-map-%3EObjectGraph"><h3>map-&gt;ObjectGraph</h3><div class="usage"><code>(map-&gt;ObjectGraph params)</code></div><pre class="doc">Transform the map of params to a graph of AWS SDK objects
 </pre></div><div class="public" id="var-mapper-%3E"><h3>mapper-&gt;</h3><div class="usage"><code>(mapper-&gt; type)</code></div><pre class="doc">Creates a function that invokes set-fields on a new object of type
 with mapped parameters.</pre></div><div class="public" id="var-set-fields"><h3>set-fields</h3><div class="usage"><code>(set-fields obj params)</code></div><pre class="doc">Use a map of params to call setters on a Java object
 </pre></div></div></body></html>
