@@ -214,7 +214,11 @@
        :expiration        - the date on which these credentials expire
       }
      :assumed-role-user
-
+      {
+       :arn             - the ARN specifying the federated user associated with the credentials
+       :assumed-role-id - a unique identifier that contains the role ID and the role session name of the role that is being assumed
+      }
+    }
 
    E.g.:
        (sts/assume-role cred {:role-arn \"arn:aws:iam::123456789012:role/demo\" :role-session-name \"Demo\" :duration-seconds 1800 })"
