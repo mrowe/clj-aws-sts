@@ -23,8 +23,10 @@ Add the following dependency to your `project.clj` file:
 (def cred {:access-key "...", :secret-key "..."})
 
 (sts/get-session-token)
-(sts/get-session-token cred { :duration-seconds 3600 })
-(sts/get-session-token cred { :serial-number "GAHT12345678" token-code "123456"})
+(sts/get-session-token cred {:duration-seconds 3600 })
+(sts/get-session-token cred {:serial-number "GAHT12345678" token-code "123456"})
+
+(sts/assume-role cred {:role-arn \"arn:aws:iam::123456789012:role/demo\" :role-session-name \"Demo\" :duration-seconds 1800 })"
 ```
 
 ### Exception handling
@@ -54,6 +56,7 @@ You can catch exceptions and extract details of the error condition:
 ### 0.1.2
 
  * get-session-token now takes parameters
+ * Introduced assume-role
 
 ### 0.1.1
 
